@@ -22,19 +22,19 @@ jobs:
   analyze:
     name: "Flutter Analyze"
     timeout-minutes: 15
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
       - name: "Install Flutter"
-        run: ./.github/workflows/scripts/install-flutter.sh stable
+        run: ./.github/workflows/scripts/install-flutter.sh 3.7.12
       - name: "Install Tools"
         run: |
           ./.github/workflows/scripts/install-tools.sh
       - name: "Bootstrap Workspace"
         run: melos bootstrap
       - name: "Run Dart Analyze"
-        uses: invertase/github-action-dart-analyzer@v1
+        uses: invertase/github-action-dart-analyzer@cdd8652b05bf7ed08ffce30f425436780f869f13 # v1
         with:
           fatal-infos: false
           fatal-warnings: true
@@ -44,12 +44,12 @@ jobs:
   pub_dev_publish_check:
     name: "Check pub.dev requirements"
     timeout-minutes: 15
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
       - name: "Install Flutter"
-        run: ./.github/workflows/scripts/install-flutter.sh stable
+        run: ./.github/workflows/scripts/install-flutter.sh 3.7.12
       - name: "Install Tools"
         run: |
           ./.github/workflows/scripts/install-tools.sh
@@ -63,12 +63,12 @@ jobs:
   pub_get_check:
     name: "Check pub dependencies"
     timeout-minutes: 15
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
       - name: "Install Flutter"
-        run: ./.github/workflows/scripts/install-flutter.sh stable
+        run: ./.github/workflows/scripts/install-flutter.sh 3.7.12
       - name: "Install Tools"
         run: |
           ./.github/workflows/scripts/install-tools.sh
@@ -81,15 +81,15 @@ jobs:
 
   check_formatting:
     name: "Check code formatting"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 40
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
         with:
           fetch-depth: 0
       - name: "Install Flutter"
-        run: ./.github/workflows/scripts/install-flutter.sh stable
+        run: ./.github/workflows/scripts/install-flutter.sh 3.7.12
       - name: "Install Tools"
         run: |
           ./.github/workflows/scripts/install-tools.sh
@@ -105,25 +105,25 @@ jobs:
         if: ${{ success() || failure() }}
         run: |
           melos exec -c 4 --ignore="*platform_interface*" --ignore="*web*" -- \
-            find . -maxdepth 3 -name "*.h" -o -name "*.m" -print0 \| xargs -0 clang-format -i --verbose
+            find . -maxdepth 3 -name "*.h" -o -name "*.m" -print0 \| xargs -0 -r clang-format -i --verbose
           ./.github/workflows/scripts/validate-formatting.sh
       - name: "Validate Java formatting"
         if: ${{ success() || failure() }}
         run: |
           melos exec -c 4 --ignore="*platform_interface*" --ignore="*web*" -- \
-            find . -maxdepth 12 -name "*.java" -print0 \| xargs -0 java -jar $HOME/google-java-format.jar --replace
+            find . -maxdepth 12 -name "*.java" -print0 \| xargs -0 -r java -jar $HOME/google-java-format.jar --replace
           ./.github/workflows/scripts/validate-formatting.sh
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 40
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
         with:
           fetch-depth: 0
 
       - name: "Install Flutter"
-        run: ./.github/workflows/scripts/install-flutter.sh stable
+        run: ./.github/workflows/scripts/install-flutter.sh 3.7.12
 
       - name: "Install Tools"
         run: ./.github/workflows/scripts/install-tools.sh

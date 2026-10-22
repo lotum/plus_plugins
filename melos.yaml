@@ -10,6 +10,11 @@ packages:
   - packages/*/*
   - packages/*/*/*
 
+# Resolve dependencies serially to avoid concurrent pub downloads and SDK setup.
+command:
+  bootstrap:
+    runPubGetInParallel: false
+
 scripts:
   lint:all:
     run: melos run analyze && melos run format

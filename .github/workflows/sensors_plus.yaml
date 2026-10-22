@@ -19,27 +19,27 @@ env:
 
 jobs:
   android_build:
-    runs-on: macos-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
       - name: "Install Flutter"
-        run: ./.github/workflows/scripts/install-flutter.sh stable
+        run: ./.github/workflows/scripts/install-flutter.sh 3.7.12
       - name: "Install Tools"
         run: ./.github/workflows/scripts/install-tools.sh
 
       # Required for Android builds
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@e9fbacdec3bb3b6036605a3e6f7995d66773a8c6 # v3
         with:
           distribution: "temurin"
-          java-version: "11"
+          java-version: "17"
 
       - name: "Build Example"
         run: ./.github/workflows/scripts/build-examples.sh android ./lib/main.dart
 
   android_integration_test:
-    runs-on: macos-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
     strategy:
       matrix:
@@ -47,22 +47,24 @@ jobs:
 
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
       - name: "Install Flutter"
-        run: ./.github/workflows/scripts/install-flutter.sh stable
+        run: ./.github/workflows/scripts/install-flutter.sh 3.7.12
       - name: "Install Tools"
         run: ./.github/workflows/scripts/install-tools.sh
 
       # Required for Android builds
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@e9fbacdec3bb3b6036605a3e6f7995d66773a8c6 # v3
         with:
           distribution: "temurin"
-          java-version: "11"
+          java-version: "17"
 
       - name: "Bootstrap Workspace"
         run: melos bootstrap
+      - name: "Enable KVM"
+        run: sudo chmod a+rw /dev/kvm
       - name: "Android Integration Test"
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2
         with:
           api-level: ${{ matrix.android-api-level }}
           cores: 3
@@ -73,43 +75,43 @@ jobs:
           script: ./.github/workflows/scripts/integration-test.sh android sensors_plus_example
 
   ios:
-    runs-on: macos-latest
+    runs-on: macos-15-intel
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
       - name: "Install Flutter"
-        run: ./.github/workflows/scripts/install-flutter.sh stable
+        run: ./.github/workflows/scripts/install-flutter.sh 3.7.12
       - name: "Install Tools"
         run: ./.github/workflows/scripts/install-tools.sh
       - name: "Build Example"
         run: ./.github/workflows/scripts/build-examples.sh ios ./lib/main.dart
 
   ios_integration_test:
-    runs-on: macos-latest
+    runs-on: macos-15-intel
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
       - name: "Install Flutter"
-        run: ./.github/workflows/scripts/install-flutter.sh stable
+        run: ./.github/workflows/scripts/install-flutter.sh 3.7.12
       - name: "Install Tools"
         run: ./.github/workflows/scripts/install-tools.sh
       - name: "Start Simulator"
-        uses: futureware-tech/simulator-action@v2
+        uses: futureware-tech/simulator-action@ee05c113b79f056b47f354d7b313555f5491e158 # v2
         with:
-          model: 'iPhone 8'
+          model: 'iPhone 16 Pro'
       - name: "Run Integration Test"
         run: ./.github/workflows/scripts/integration-test.sh ios sensors_plus_example
 
   web:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
       - name: "Install Flutter"
-        run: ./.github/workflows/scripts/install-flutter.sh stable
+        run: ./.github/workflows/scripts/install-flutter.sh 3.7.12
       - name: "Install Tools"
         run: ./.github/workflows/scripts/install-tools.sh
       - name: "Build Example"
