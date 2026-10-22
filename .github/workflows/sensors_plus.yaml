@@ -19,7 +19,7 @@ env:
 
 jobs:
   android_build:
-    runs-on: macos-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -33,13 +33,13 @@ jobs:
       - uses: actions/setup-java@e9fbacdec3bb3b6036605a3e6f7995d66773a8c6 # v3
         with:
           distribution: "temurin"
-          java-version: "11"
+          java-version: "17"
 
       - name: "Build Example"
         run: ./.github/workflows/scripts/build-examples.sh android ./lib/main.dart
 
   android_integration_test:
-    runs-on: macos-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
     strategy:
       matrix:
@@ -57,10 +57,12 @@ jobs:
       - uses: actions/setup-java@e9fbacdec3bb3b6036605a3e6f7995d66773a8c6 # v3
         with:
           distribution: "temurin"
-          java-version: "11"
+          java-version: "17"
 
       - name: "Bootstrap Workspace"
         run: melos bootstrap
+      - name: "Enable KVM"
+        run: sudo chmod a+rw /dev/kvm
       - name: "Android Integration Test"
         uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2
         with:
@@ -73,7 +75,7 @@ jobs:
           script: ./.github/workflows/scripts/integration-test.sh android sensors_plus_example
 
   ios:
-    runs-on: macos-latest
+    runs-on: macos-15-intel
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -86,7 +88,7 @@ jobs:
         run: ./.github/workflows/scripts/build-examples.sh ios ./lib/main.dart
 
   ios_integration_test:
-    runs-on: macos-latest
+    runs-on: macos-15-intel
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -103,7 +105,7 @@ jobs:
         run: ./.github/workflows/scripts/integration-test.sh ios sensors_plus_example
 
   web:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"

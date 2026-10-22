@@ -23,7 +23,7 @@ env:
 
 jobs:
   android_build:
-    runs-on: macos-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -37,13 +37,13 @@ jobs:
       - uses: actions/setup-java@e9fbacdec3bb3b6036605a3e6f7995d66773a8c6 # v3
         with:
           distribution: "temurin"
-          java-version: "11"
+          java-version: "17"
 
       - name: "Build Example"
         run: ./.github/workflows/scripts/build-examples.sh android ./lib/main.dart
 
   android_integration_test:
-    runs-on: macos-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
     strategy:
       matrix:
@@ -61,11 +61,13 @@ jobs:
       - uses: actions/setup-java@e9fbacdec3bb3b6036605a3e6f7995d66773a8c6 # v3
         with:
           distribution: "temurin"
-          java-version: "11"
+          java-version: "17"
 
       - name: "Bootstrap Workspace"
         run: melos bootstrap
 
+      - name: "Enable KVM"
+        run: sudo chmod a+rw /dev/kvm
       - name: "Android Integration Test"
         uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2
         with:
@@ -78,7 +80,7 @@ jobs:
           script: ./.github/workflows/scripts/integration-test.sh android network_info_plus_example
 
   ios:
-    runs-on: macos-latest
+    runs-on: macos-15-intel
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -91,7 +93,7 @@ jobs:
         run: ./.github/workflows/scripts/build-examples.sh ios ./lib/main.dart
 
   ios_integration_test:
-    runs-on: macos-latest
+    runs-on: macos-15-intel
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -108,7 +110,7 @@ jobs:
         run: ./.github/workflows/scripts/integration-test.sh ios network_info_plus_example
 
   macos:
-    runs-on: macos-latest
+    runs-on: macos-15-intel
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -121,7 +123,7 @@ jobs:
         run: ./.github/workflows/scripts/build-examples.sh macos ./lib/main.dart
 
   macos_integration_test:
-    runs-on: macos-latest
+    runs-on: macos-15-intel
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -137,7 +139,7 @@ jobs:
         run: ./.github/workflows/scripts/integration-test.sh macos network_info_plus_example
 
   linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -150,7 +152,7 @@ jobs:
         run: ./.github/workflows/scripts/build-examples.sh linux ./lib/main.dart
 
   linux_integration_test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -163,7 +165,7 @@ jobs:
         run: ./.github/workflows/scripts/integration-test.sh linux network_info_plus_example
 
   windows:
-    runs-on: windows-latest
+    runs-on: windows-2022
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -177,7 +179,7 @@ jobs:
 
   windows_integration_test:
     if: false  # TODO: reinstate this when the windows implementation is fixed
-    runs-on: windows-latest
+    runs-on: windows-2022
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -190,7 +192,7 @@ jobs:
         run: ./.github/workflows/scripts/integration-test.sh windows network_info_plus_example
 
   web:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"

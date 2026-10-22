@@ -18,7 +18,7 @@ defaults:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repo
         uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
@@ -35,7 +35,7 @@ jobs:
   deploy:
     name: Deploy
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repo
         uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3

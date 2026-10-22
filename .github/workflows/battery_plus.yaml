@@ -23,7 +23,7 @@ env:
 
 jobs:
   android:
-    runs-on: macos-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -37,13 +37,13 @@ jobs:
       - uses: actions/setup-java@e9fbacdec3bb3b6036605a3e6f7995d66773a8c6 # v3
         with:
           distribution: "temurin"
-          java-version: "11"
+          java-version: "17"
 
       - name: "Build Example"
         run: ./.github/workflows/scripts/build-examples.sh android ./lib/main.dart
 
   android_integration_test:
-    runs-on: macos-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
     strategy:
       matrix:
@@ -61,10 +61,12 @@ jobs:
       - uses: actions/setup-java@e9fbacdec3bb3b6036605a3e6f7995d66773a8c6 # v3
         with:
           distribution: "temurin"
-          java-version: "11"
+          java-version: "17"
 
       - name: "Bootstrap Workspace"
         run: melos bootstrap
+      - name: "Enable KVM"
+        run: sudo chmod a+rw /dev/kvm
       - name: "Android Integration Test"
         uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2
         with:
@@ -77,7 +79,7 @@ jobs:
           script: ./.github/workflows/scripts/integration-test.sh android battery_plus_example
 
   ios:
-    runs-on: macos-latest
+    runs-on: macos-15-intel
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -90,7 +92,7 @@ jobs:
         run: ./.github/workflows/scripts/build-examples.sh ios ./lib/main.dart
 
   ios_integration_test:
-    runs-on: macos-latest
+    runs-on: macos-15-intel
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -102,12 +104,12 @@ jobs:
       - name: "Start Simulator"
         uses: futureware-tech/simulator-action@ee05c113b79f056b47f354d7b313555f5491e158 # v2
         with:
-          model: "iPhone 8"
+          model: "iPhone 16 Pro"
       - name: "Run Integration Test"
         run: ./.github/workflows/scripts/integration-test.sh ios battery_plus_example
 
   macos:
-    runs-on: macos-latest
+    runs-on: macos-15-intel
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -121,7 +123,7 @@ jobs:
 
   macos_integration_test:
     if: false # Disabled as battery_plus APIs don't complete in github actions macos VMs.
-    runs-on: macos-latest
+    runs-on: macos-15-intel
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -137,7 +139,7 @@ jobs:
         run: ./.github/workflows/scripts/integration-test.sh macos battery_plus_example
 
   linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -152,7 +154,7 @@ jobs:
         run: ./.github/workflows/scripts/build-examples.sh linux ./lib/main.dart
 
   linux_integration_test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -167,7 +169,7 @@ jobs:
         run: ./.github/workflows/scripts/integration-test.sh linux battery_plus_example
 
   windows:
-    runs-on: windows-latest
+    runs-on: windows-2022
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -180,7 +182,7 @@ jobs:
         run: ./.github/workflows/scripts/build-examples.sh windows ./lib/main.dart
 
   windows_integration_test:
-    runs-on: windows-latest
+    runs-on: windows-2022
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
@@ -193,7 +195,7 @@ jobs:
         run: ./.github/workflows/scripts/integration-test.sh windows battery_plus_example
 
   web:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
     steps:
       - name: "Checkout repository"
