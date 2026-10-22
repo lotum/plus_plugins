@@ -25,7 +25,7 @@ jobs:
       - name: "Checkout repository"
         uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
       - name: "Install Flutter"
-        run: ./.github/workflows/scripts/install-flutter.sh stable
+        run: ./.github/workflows/scripts/install-flutter.sh 3.7.12
       - name: "Install Tools"
         run: ./.github/workflows/scripts/install-tools.sh
 
@@ -49,7 +49,7 @@ jobs:
       - name: "Checkout repository"
         uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
       - name: "Install Flutter"
-        run: ./.github/workflows/scripts/install-flutter.sh stable
+        run: ./.github/workflows/scripts/install-flutter.sh 3.7.12
       - name: "Install Tools"
         run: ./.github/workflows/scripts/install-tools.sh
 
