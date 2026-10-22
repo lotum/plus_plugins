@@ -129,9 +129,9 @@ jobs:
         uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
       # Use till https://github.com/flutter/flutter/issues/118469 is resolved
       - name: "Install Flutter"
-        uses: ./.github/actions/setup-flutter
+        uses: flutter-actions/setup-flutter@adb607ae976a9e00473569facfc69813c637a060 # v4.3
         with:
-          flutter-version: '3.3.10'
+          version: '3.3.10'
       - name: "Install Tools"
         run: ./.github/workflows/scripts/install-tools.sh
       - name: "Run Integration Test"
