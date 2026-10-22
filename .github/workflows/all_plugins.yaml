@@ -105,13 +105,13 @@ jobs:
         if: ${{ success() || failure() }}
         run: |
           melos exec -c 4 --ignore="*platform_interface*" --ignore="*web*" -- \
-            find . -maxdepth 3 -name "*.h" -o -name "*.m" -print0 \| xargs -0 clang-format -i --verbose
+            find . -maxdepth 3 -name "*.h" -o -name "*.m" -print0 \| xargs -0 -r clang-format -i --verbose
           ./.github/workflows/scripts/validate-formatting.sh
       - name: "Validate Java formatting"
         if: ${{ success() || failure() }}
         run: |
           melos exec -c 4 --ignore="*platform_interface*" --ignore="*web*" -- \
-            find . -maxdepth 12 -name "*.java" -print0 \| xargs -0 java -jar $HOME/google-java-format.jar --replace
+            find . -maxdepth 12 -name "*.java" -print0 \| xargs -0 -r java -jar $HOME/google-java-format.jar --replace
           ./.github/workflows/scripts/validate-formatting.sh
 
   test:
